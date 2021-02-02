@@ -75,7 +75,7 @@ time=$(( $end_time - $start_time ))
 
 #输出结果
 echo -e "\n--------------------------------------------------------------"
-echo -e "所有任务已处理完成！！\n总日志大小：$log_size      处理时间：$time"
+echo -e "所有任务已处理完成！！\n总日志大小：${log_size}      处理时间：${time}秒"
 echo -e "\nURL访问量前三为："
 head -3 url_sort_top20.log
 echo "IP访问量前三为："
