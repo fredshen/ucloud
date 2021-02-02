@@ -67,7 +67,7 @@ echo -e "$(date +%Y-%m-%d\ %H:%M:%S) Step 3/4:\nTOP3URL完整日志已获取完�
 awk '{print $3}' top3url_initial.log | sort |uniq -c | sort -n -r |less > top3url_ip_sort.log
 head -20 top3url_ip_sort.log > top3url_ip_sort_top20.log
 rm -rf top3url_initial.log top3url_ip_sort.log
-echo -e "$(date +%Y-%m-%d\ %H:%M:%S) Step 4/4:\nTOP3URL对应的IP已排序完成，所有任务已完成！！"
+echo -e "$(date +%Y-%m-%d\ %H:%M:%S) Step 4/4:\nTOP3URL对应的IP已排序完成"
 
 #获取任务结束时间，并计算耗时
 end_time=$(date +%s)
@@ -75,7 +75,7 @@ time=$(( $end_time - $start_time ))
 
 #输出结果
 echo -e "\n--------------------------------------------------------------"
-echo -e "所有任务已处理完成\总日志大小：$log_size      处理时间：$time"
+echo -e "所有任务已处理完成！！\n总日志大小：$log_size      处理时间：$time"
 echo -e "\nURL访问量前三为："
 head -3 url_sort_top20.log
 echo "IP访问量前三为："
