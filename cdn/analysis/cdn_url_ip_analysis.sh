@@ -32,8 +32,8 @@
 #####################################################################################################
 
 #获取任务开始时间
-start_time=$(date +%Y-%m-%d\ %H:%M:%S)
-echo -e "$starttime\n任务开始"
+start_time=$(date +%s)
+echo -e "$(date +%Y-%m-%d\ %H:%M:%S)\n任务开始"
 
 #合并解压UCloud Console下载的原始日志，并获取原始日志大小
 log_name_00="替换为日志的文件名,不包含后缀(.gz)"
@@ -70,8 +70,8 @@ rm -rf top3url_initial.log top3url_ip_sort.log
 echo -e "$(date +%Y-%m-%d\ %H:%M:%S)\nStep 4/4: TOP3URL对应的IP已排序完成，所有任务已完成！！"
 
 #获取任务结束时间，并计算耗时
-end_time=$(date +%Y-%m-%d\ %H:%M:%S)
-time=*
+end_time=$(date +%s)
+time=$(( $end_time - $start_time ))
 
 #输出结果
 echo -e "\n--------------------------------------------------------------"
