@@ -25,12 +25,8 @@
 # c/IP sorting of the top three URLs <top3url_ip_sort_top20.log>,                                   #
 #                                                                                                   #
 # Version:1.1                                                                                       #
-# Added notifications                                                                               #
-#                                                                                                   #
-#                                                                                                   #
-#                                                                                                   #
-#                                                                                                   #
-#                                                                                                   #
+# 1.Added Progress and Notifications functions                                                      #
+# 2.Changed Full sort to Sorted top 20                                                              #
 #                                                                                                   #
 #####################################################################################################
 
