@@ -2,7 +2,7 @@
 #####################################################################################################
 #                                                                                                   #
 # Author: F.Shen                                                                                    #
-# Version: 1.0                                                                                      #
+# Version: 1.1                                                                                      #
 # Release Date: 01/29/2021                                                                          #
 # Features:Sort by URL > TOP3URL, sort the request IP of TOP3URL, analyze CDN abnormal requests     #
 # Export: a/URL sort <url_sort.log>, b/TOP3URL request IP sort <top3url_ip_sort.log>                #
@@ -15,6 +15,14 @@
 # Version:1.0                                                                                       #
 # Sort by URL, sort the request IP of TOP3URL, analyze CDN abnormal requests                        #
 # Export unit time: a/URL sort <url_sort.log>, b/TOP3URL request IP sort <top3url_ip_sort.log>      #
+#                                                                                                   #
+# Version:1.1                                                                                       #
+# Added notifications                                                                               #
+#                                                                                                   #
+#                                                                                                   #
+#                                                                                                   #
+#                                                                                                   #
+#                                                                                                   #
 #                                                                                                   #
 #####################################################################################################
 
