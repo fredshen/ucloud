@@ -44,7 +44,7 @@ log_name_03="2021012909_static.xigou100.com_CDN.log_00"
 gunzip ${log_name_00}.gz ${log_name_01}.gz ${log_name_02}.gz ${log_name_03}.gz
 cat ${log_name_00} ${log_name_01} ${log_name_02} ${log_name_03} > initial.log
 rm -rf ${log_name_00} ${log_name_01} ${log_name_02} ${log_name_03}
-#log_size=*
+log_size=`ll -h initial.log |awk '{print $5}'`
 echo -e "$(date +%Y-%m-%d\ %H:%M:%S) Step 1/4:\n原始日志已合并完毕，即将进行URL排序..."
 
 #截取日志文件的第5列（URL），并将其重复项合并，从大到小进行排序
