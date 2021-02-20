@@ -2,8 +2,8 @@
 #####################################################################################################
 #                                                                                                   #
 # Author: F.Shen                                                                                    #
-# Version: 1.1                                                                                      #
-# Release Date: 02/02/2021                                                                          #
+# Version: 1.0                                                                                      #
+# Release Date: 02/20/2021                                                                          #
 # Features:                                                                                         #
 # 1.Sort URLs in the original log                                                                   #
 # 2.Sort the top three URLs by IP                                                                   #
