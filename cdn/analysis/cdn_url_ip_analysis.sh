@@ -50,24 +50,18 @@ echo -e "$(date +%Y-%m-%d\ %H:%M:%S) Step 1/4:\n原始日志已合并完毕，�
 #截取日志文件的第5列（URL），并将其重复项合并，从大到小进行排序
 awk '{print $5}' initial.log | sort |uniq -c | sort -n -r |less > url_sort.log
 head -20 url_sort.log > url_sort_top20.log
-head -3 url_sort_top20.log > url_sort_top3.log
-awk '{print $2}' url_sort_top3.log > top3_url.log
-rm -rf url_sort.log url_sort_top3.log
-echo -e "$(date +%Y-%m-%d\ %H:%M:%S) Step 2/4:\nURL已排序完成，即将从原始日志<initial.log>中获取TOP3URL的完整日志..."
+echo -e "$(date +%Y-%m-%d\ %H:%M:%S) Step 2/4:\nURL已排序完成，即将从原始日志<initial.log>中获取TOP20URL的对应IP排序..."
 
-#通过TOP3的URL，在原始日志<initial.log>中过滤，导出TOP3URL的原始日志<top3url_initial.log>
-cat top3_url.log | while read myline
+#遍历TOP20URL，并逐个排序IP
+for a in {1..20}
 do
-        grep "$myline" initial.log > top3url_initial.log
+        b=`sed -n "${a}p" top30_url |awk '{print $2}'`
+        grep "${b}" initial.log |sort |uniq -c | sort -n -r |less > top${a}url_ip_sort.log
 done
-rm -rf top3_url.log
-echo -e "$(date +%Y-%m-%d\ %H:%M:%S) Step 3/4:\nTOP3URL完整日志已获取完成，即将进行IP排序..."
+rm -rf url_sort_top20.log
+echo -e "$(date +%Y-%m-%d\ %H:%M:%S) Step 3/4:\nTOP20URL对应的IP已排序完成，即将进行结果汇总..."
 
-#将TOP3URL的原始日志top3url_initial.log处理，将请求IP从大到小一次排序
-awk '{print $3}' top3url_initial.log | sort |uniq -c | sort -n -r |less > top3url_ip_sort.log
-head -20 top3url_ip_sort.log > top3url_ip_sort_top20.log
-rm -rf top3url_initial.log top3url_ip_sort.log
-echo -e "$(date +%Y-%m-%d\ %H:%M:%S) Step 4/4:\nTOP3URL对应的IP已排序完成"
+#echo -e "$(date +%Y-%m-%d\ %H:%M:%S) Step 4/4:\nTOP3URL对应的IP已排序完成"
 
 #获取任务结束时间，并计算耗时
 end_time=$(date +%s)
@@ -76,21 +70,29 @@ time=$(( $end_time - $start_time ))
 #输出结果
 echo -e "\n--------------------------------------------------------------"
 echo -e "所有任务已处理完成！！\n总日志大小：${log_size}      处理时间：${time}秒"
-echo -e "\nURL访问量前三为："
-head -3 url_sort_top20.log
-echo "IP访问量前三为："
-head -3 top3url_ip_sort_top20.log
+#echo -e "\nURL访问量前三为："
+#head -3 url_sort_top20.log
+#echo "IP访问量前三为："
+#head -3 top3url_ip_sort_top20.log
 
-echo -e "\n请在目录下查看分析结果：a/initial.log、b/url_sort_top20.log、c/top3url_ip_sort_top20.log"
+echo -e "\n请在目录下查看分析结果
+：a/initial.log、b/url_sort_top20.log、c/top3url_ip_sort_top20.log"
 
 
+
+#head -3 url_sort_top20.log > url_sort_top3.log
+#awk '{print $2}' url_sort_top3.log > top3_url.log
+#rm -rf url_sort.log url_sort_top3.log
 #!/bin/bash
+#for a in {1..30}
+#do
+#  b=`sed -n "${a}p" top30_url |awk '{print $2}'`
 
-x=3
-hang=`sed -n '${x}3p' list.log |awk '{print $1}'`
-echo ${hang}
+#x=3
+#hang=`sed -n '${x}3p' list.log |awk '{print $1}'`
+#echo ${hang}
 
-        #aa=`awk '{print $1} list.log`
+#aa=`awk '{print $1} list.log`
 #echo $hang
 #echo $aa
 
@@ -103,4 +105,5 @@ echo ${hang}
 #       #hang=`sed -n '${i}p' list.log |awk '{print $1}'`
 #       echo ${i}
 #done
-~      
+#~
+#
