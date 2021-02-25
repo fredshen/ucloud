@@ -82,3 +82,25 @@ echo "IP访问量前三为："
 head -3 top3url_ip_sort_top20.log
 
 echo -e "\n请在目录下查看分析结果：a/initial.log、b/url_sort_top20.log、c/top3url_ip_sort_top20.log"
+
+
+#!/bin/bash
+
+x=3
+hang=`sed -n '${x}3p' list.log |awk '{print $1}'`
+echo ${hang}
+
+        #aa=`awk '{print $1} list.log`
+#echo $hang
+#echo $aa
+
+
+#log_size=`ls -l -h list.log |awk '{print $5}'`
+#echo $log_size
+
+#for i in {1..3}
+#do
+#       #hang=`sed -n '${i}p' list.log |awk '{print $1}'`
+#       echo ${i}
+#done
+~      
