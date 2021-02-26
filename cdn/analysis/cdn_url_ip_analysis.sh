@@ -55,13 +55,22 @@ echo -e "$(date +%Y-%m-%d\ %H:%M:%S) Step 2/4:\nURL已排序完成，即将从�
 #遍历TOP20URL，并逐个排序IP
 for a in {1..20}
 do
-        b=`sed -n "${a}p" top30_url |awk '{print $2}'`
-        grep "${b}" initial.log |sort |uniq -c | sort -n -r |less > top${a}url_ip_sort.log
+        b=`sed -n "${a}p" url_sort_top20.log |awk '{print $2}'`
+        c=`sed -n "${a}p" url_sort_top20.log`
+        grep "${b}" initial.log |awk '{print $3}'|sort |uniq -c | sort -n -r |less > top${a}url_ip_sort.log
+        head -20 top${a}url_ip_sort.log > top${a}url_ip_sort_top20.log
+        sed -i "1i ${c} 对应的IP排序为：" top${a}url_ip_sort_top20.log
+        echo -e "TOP${a}URL对应IP已排序完成"
 done
+
 rm -rf url_sort_top20.log
 echo -e "$(date +%Y-%m-%d\ %H:%M:%S) Step 3/4:\nTOP20URL对应的IP已排序完成，即将进行结果汇总..."
 
-#echo -e "$(date +%Y-%m-%d\ %H:%M:%S) Step 4/4:\nTOP3URL对应的IP已排序完成"
+#汇总分析结果
+cat top1url_ip_sort_top20.log top2url_ip_sort_top20.log top3url_ip_sort_top20.log top4url_ip_sort_top20.log top5url_ip_sort_top20.log top6url_ip_sort_top20.log top7url_ip_sort_top20.log top8url_ip_sort_top20.log top9url_ip_sort_top20.log top10url_ip_sort_top20.log top11url_ip_sort_top20.log top12url_ip_sort_top20.log top13url_ip_sort_top20.log top14url_ip_sort_top20.log top15url_ip_sort_top20.log top16url_ip_sort_top20.log top17url_ip_sort_top20.log top18url_ip_sort_top20.log top19url_ip_sort_top20.log top20url_ip_sort_top20.log > url_ip_sort.log
+rm -rf top1url_ip_sort_top20.log top2url_ip_sort_top20.log top3url_ip_sort_top20.log top4url_ip_sort_top20.log top5url_ip_sort_top20.log top6url_ip_sort_top20.log top7url_ip_sort_top20.log top8url_ip_sort_top20.log top9url_ip_sort_top20.log top10url_ip_sort_top20.log top11url_ip_sort_top20.log top12url_ip_sort_top20.log top13url_ip_sort_top20.log top14url_ip_sort_top20.log top15url_ip_sort_top20.log top16url_ip_sort_top20.log top17url_ip_sort_top20.log top18url_ip_sort_top20.log top19url_ip_sort_top20.log top20url_ip_sort_top20.log
+rm -rf top1url_ip_sort.log top2url_ip_sort.log top3url_ip_sort.log top4url_ip_sort.log top5url_ip_sort.log top6url_ip_sort.log top7url_ip_sort.log top8url_ip_sort.log top9url_ip_sort.log top10url_ip_sort.log top11url_ip_sort.log top12url_ip_sort.log top13url_ip_sort.log top14url_ip_sort.log top15url_ip_sort.log top16url_ip_sort.log top17url_ip_sort.log top18url_ip_sort.log top19url_ip_sort.log top20url_ip_sort.log
+echo -e "$(date +%Y-%m-%d\ %H:%M:%S) Step 4/4:\n分析结果已汇总完成"
 
 #获取任务结束时间，并计算耗时
 end_time=$(date +%s)
@@ -70,18 +79,19 @@ time=$(( $end_time - $start_time ))
 #输出结果
 echo -e "\n--------------------------------------------------------------"
 echo -e "所有任务已处理完成！！\n总日志大小：${log_size}      处理时间：${time}秒"
+echo -e "\n请在目录下查看分析结果"
+
+
 #echo -e "\nURL访问量前三为："
 #head -3 url_sort_top20.log
 #echo "IP访问量前三为："
 #head -3 top3url_ip_sort_top20.log
-
-echo -e "\n请在目录下查看分析结果
-：a/initial.log、b/url_sort_top20.log、c/top3url_ip_sort_top20.log"
-
-
-
 #head -3 url_sort_top20.log > url_sort_top3.log
 #awk '{print $2}' url_sort_top3.log > top3_url.log
+
+
+
+
 #rm -rf url_sort.log url_sort_top3.log
 #!/bin/bash
 #for a in {1..30}
