@@ -55,6 +55,7 @@ head -20 url_sort.log > url_sort_top20.log
 echo -e "$(date +%Y-%m-%d\ %H:%M:%S) Step 2/4:\nIP和URL已分别排序完成，即将从原始日志<initial.log>中获取TOP20URL对应的IP和TOP20IP的URL，并进行排序..."
 
 #遍历TOP20URL，并逐个排序IP
+echo "--------将TOP20URL逐个进行IP排序--------"
 for a in {1..20}
 do
         b=`sed -n "${a}p" url_sort_top20.log |awk '{print $2}'`
@@ -65,6 +66,7 @@ do
         echo -e "TOP${a}URL对应IP已排序完成"
 done
 #遍历TOP20IP，并逐个排序URL
+echo "--------将TOP20IP逐个进行URL排序--------"
 for d in {1..20}
 do
         e=`sed -n "${d}p" ip_sort_top20.log |awk '{print $2}'`
@@ -81,10 +83,9 @@ rm -rf url_sort_top20.log
 echo -e "$(date +%Y-%m-%d\ %H:%M:%S) Step 3/4:\nTOP20URL对应的IP和TOP20IP的URL已排序完成，即将进行结果汇总..."
 
 #汇总分析结果
-cat top1ip_url_sort_top20.log top2ip_url_sort_top20.log top3ip_url_sort_top20.log top4ip_url_sort_top20.log top5ip_url_sort_top20.log top6ip_url_sort_top20.log top7ip_url_sort_top20.log top8ip_url_sort_top20.log top9ip_url_sort_top20.log top10ip_url_sort_top20.log top11ip_url_sort_top20.log top12ip_url_sort_top20.log top13ip_url_sort_top20.log top14ip_url_sort_top20.log top15ip_url_sort_top20.log top16ip_url_sort_top20.log top17ip_url_sort_top20.log top18ip_url_sort_top20.log top19ip_url_sort_top20.log top20ip_url_sort_top20.log > ip_url_sort.log
+cat top1ip_url_sort_top20.log top2ip_url_sort_top20.log top3ip_url_sort_top20.log top4ip_url_sort_top20.log top5ip_url_sort_top20.log top6ip_url_sort_top20.log top7ip_url_sort_top20.log top8ip_url_sort_top20.log top9ip_url_sort_top20.log top10ip_url_sort_top20.log top11ip_url_sort_top20.log top12ip_url_sort_top20.log top13ip_url_sort_top20.log top14ip_url_sort_top20.log top15ip_url_sort_top20.log top16ip_url_sort_top20.log top17ip_url_sort_top20.log top18ip_url_sort_top20.log top19ip_url_sort_top20.log top20ip_url_sort_top20.log top1url_ip_sort_top20.log top2url_ip_sort_top20.log top3url_ip_sort_top20.log top4url_ip_sort_top20.log top5url_ip_sort_top20.log top6url_ip_sort_top20.log top7url_ip_sort_top20.log top8url_ip_sort_top20.log top9url_ip_sort_top20.log top10url_ip_sort_top20.log top11url_ip_sort_top20.log top12url_ip_sort_top20.log top13url_ip_sort_top20.log top14url_ip_sort_top20.log top15url_ip_sort_top20.log top16url_ip_sort_top20.log top17url_ip_sort_top20.log top18url_ip_sort_top20.log top19url_ip_sort_top20.log top20url_ip_sort_top20.log > ip_url_sort.log
 rm -rf top1ip_url_sort_top20.log top2ip_url_sort_top20.log top3ip_url_sort_top20.log top4ip_url_sort_top20.log top5ip_url_sort_top20.log top6ip_url_sort_top20.log top7ip_url_sort_top20.log top8ip_url_sort_top20.log top9ip_url_sort_top20.log top10ip_url_sort_top20.log top11ip_url_sort_top20.log top12ip_url_sort_top20.log top13ip_url_sort_top20.log top14ip_url_sort_top20.log top15ip_url_sort_top20.log top16ip_url_sort_top20.log top17ip_url_sort_top20.log top18ip_url_sort_top20.log top19ip_url_sort_top20.log top20ip_url_sort_top20.log
 rm -rf top1ip_url_sort.log top2ip_url_sort.log top3ip_url_sort.log top4ip_url_sort.log top5ip_url_sort.log top6ip_url_sort.log top7ip_url_sort.log top8ip_url_sort.log top9ip_url_sort.log top10ip_url_sort.log top11ip_url_sort.log top12ip_url_sort.log top13ip_url_sort.log top14ip_url_sort.log top15ip_url_sort.log top16ip_url_sort.log top17ip_url_sort.log top18ip_url_sort.log top19ip_url_sort.log top20ip_url_sort.log
-cat top1url_ip_sort_top20.log top2url_ip_sort_top20.log top3url_ip_sort_top20.log top4url_ip_sort_top20.log top5url_ip_sort_top20.log top6url_ip_sort_top20.log top7url_ip_sort_top20.log top8url_ip_sort_top20.log top9url_ip_sort_top20.log top10url_ip_sort_top20.log top11url_ip_sort_top20.log top12url_ip_sort_top20.log top13url_ip_sort_top20.log top14url_ip_sort_top20.log top15url_ip_sort_top20.log top16url_ip_sort_top20.log top17url_ip_sort_top20.log top18url_ip_sort_top20.log top19url_ip_sort_top20.log top20url_ip_sort_top20.log > url_ip_sort.log
 rm -rf top1url_ip_sort_top20.log top2url_ip_sort_top20.log top3url_ip_sort_top20.log top4url_ip_sort_top20.log top5url_ip_sort_top20.log top6url_ip_sort_top20.log top7url_ip_sort_top20.log top8url_ip_sort_top20.log top9url_ip_sort_top20.log top10url_ip_sort_top20.log top11url_ip_sort_top20.log top12url_ip_sort_top20.log top13url_ip_sort_top20.log top14url_ip_sort_top20.log top15url_ip_sort_top20.log top16url_ip_sort_top20.log top17url_ip_sort_top20.log top18url_ip_sort_top20.log top19url_ip_sort_top20.log top20url_ip_sort_top20.log
 rm -rf top1url_ip_sort.log top2url_ip_sort.log top3url_ip_sort.log top4url_ip_sort.log top5url_ip_sort.log top6url_ip_sort.log top7url_ip_sort.log top8url_ip_sort.log top9url_ip_sort.log top10url_ip_sort.log top11url_ip_sort.log top12url_ip_sort.log top13url_ip_sort.log top14url_ip_sort.log top15url_ip_sort.log top16url_ip_sort.log top17url_ip_sort.log top18url_ip_sort.log top19url_ip_sort.log top20url_ip_sort.log
 
