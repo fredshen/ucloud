@@ -5,11 +5,11 @@
 # Version: 1.1                                                                                      #
 # Release Date: 02/02/2021                                                                          #
 # Features:                                                                                         #
-# 1.Sort URLs in the original log                                                                   #
-# 2.Sort the top three URLs by IP                                                                   #
+# 1.Sort URLs&IPs in the original log                                                               #
+# 2.Sort the logs corresponding to URL and IP                                                       #
 # Export:                                                                                           #
-# a/Original log<initial.log>, b/URL sorting log<url_sort_top20.log>,                               #
-# c/IP sorting of the top three URLs <top3url_ip_sort_top20.log>,                                   #
+# a/Original log<initial.log>, b/URL&IP sorting log<url_sort.log> & <ip_sort.log>,                  #
+# c/Analysis result <ip_url_sort.log>,                                                              #
 #                                                                                                   #
 # ** Let me know if there're any BUGs | fred.shen@ucloud.cn                                         #
 #                                                                                                   #
@@ -28,6 +28,10 @@
 # 1.Added Progress and Notifications functions                                                      #
 # 2.Changed Full sort to Sorted top 20                                                              #
 # 3.Added Time stamp and Task overview                                                              #
+#                                                                                                   #
+# Version:1.2                                                                                       #
+# 1.Added IP Sort and URL sort                                                                      #
+# 2.Consolidate analysis results                                                                    #
 #                                                                                                   #
 #####################################################################################################
 
@@ -83,13 +87,11 @@ rm -rf url_sort_top20.log
 echo -e "$(date +%Y-%m-%d\ %H:%M:%S) Step 3/4:\nTOP20URL对应的IP和TOP20IP的URL已排序完成，即将进行结果汇总..."
 
 #汇总分析结果
-cat top1ip_url_sort_top20.log top2ip_url_sort_top20.log top3ip_url_sort_top20.log top4ip_url_sort_top20.log top5ip_url_sort_top20.log top6ip_url_sort_top20.log top7ip_url_sort_top20.log top8ip_url_sort_top20.log top9ip_url_sort_top20.log top10ip_url_sort_top20.log top11ip_url_sort_top20.log top12ip_url_sort_top20.log top13ip_url_sort_top20.log top14ip_url_sort_top20.log top15ip_url_sort_top20.log top16ip_url_sort_top20.log top17ip_url_sort_top20.log top18ip_url_sort_top20.log top19ip_url_sort_top20.log top20ip_url_sort_top20.log top1url_ip_sort_top20.log top2url_ip_sort_top20.log top3url_ip_sort_top20.log top4url_ip_sort_top20.log top5url_ip_sort_top20.log top6url_ip_sort_top20.log top7url_ip_sort_top20.log top8url_ip_sort_top20.log top9url_ip_sort_top20.log top10url_ip_sort_top20.log top11url_ip_sort_top20.log top12url_ip_sort_top20.log top13url_ip_sort_top20.log top14url_ip_sort_top20.log top15url_ip_sort_top20.log top16url_ip_sort_top20.log top17url_ip_sort_top20.log top18url_ip_sort_top20.log top19url_ip_sort_top20.log top20url_ip_sort_top20.log > ip_url_sort.log
-rm -rf top1ip_url_sort_top20.log top2ip_url_sort_top20.log top3ip_url_sort_top20.log top4ip_url_sort_top20.log top5ip_url_sort_top20.log top6ip_url_sort_top20.log top7ip_url_sort_top20.log top8ip_url_sort_top20.log top9ip_url_sort_top20.log top10ip_url_sort_top20.log top11ip_url_sort_top20.log top12ip_url_sort_top20.log top13ip_url_sort_top20.log top14ip_url_sort_top20.log top15ip_url_sort_top20.log top16ip_url_sort_top20.log top17ip_url_sort_top20.log top18ip_url_sort_top20.log top19ip_url_sort_top20.log top20ip_url_sort_top20.log
-rm -rf top1ip_url_sort.log top2ip_url_sort.log top3ip_url_sort.log top4ip_url_sort.log top5ip_url_sort.log top6ip_url_sort.log top7ip_url_sort.log top8ip_url_sort.log top9ip_url_sort.log top10ip_url_sort.log top11ip_url_sort.log top12ip_url_sort.log top13ip_url_sort.log top14ip_url_sort.log top15ip_url_sort.log top16ip_url_sort.log top17ip_url_sort.log top18ip_url_sort.log top19ip_url_sort.log top20ip_url_sort.log
-rm -rf top1url_ip_sort_top20.log top2url_ip_sort_top20.log top3url_ip_sort_top20.log top4url_ip_sort_top20.log top5url_ip_sort_top20.log top6url_ip_sort_top20.log top7url_ip_sort_top20.log top8url_ip_sort_top20.log top9url_ip_sort_top20.log top10url_ip_sort_top20.log top11url_ip_sort_top20.log top12url_ip_sort_top20.log top13url_ip_sort_top20.log top14url_ip_sort_top20.log top15url_ip_sort_top20.log top16url_ip_sort_top20.log top17url_ip_sort_top20.log top18url_ip_sort_top20.log top19url_ip_sort_top20.log top20url_ip_sort_top20.log
-rm -rf top1url_ip_sort.log top2url_ip_sort.log top3url_ip_sort.log top4url_ip_sort.log top5url_ip_sort.log top6url_ip_sort.log top7url_ip_sort.log top8url_ip_sort.log top9url_ip_sort.log top10url_ip_sort.log top11url_ip_sort.log top12url_ip_sort.log top13url_ip_sort.log top14url_ip_sort.log top15url_ip_sort.log top16url_ip_sort.log top17url_ip_sort.log top18url_ip_sort.log top19url_ip_sort.log top20url_ip_sort.log
-
-
+for g in {1..20}
+do
+        cat top${g}ip_url_sort_top20.log > ip_url_sort.log
+        rm -rf top${g}ip_url_sort_top20.log top${g}ip_url_sort.log top${g}url_ip_sort_top20.log top${g}url_ip_sort.log
+done
 echo -e "$(date +%Y-%m-%d\ %H:%M:%S) Step 4/4:\n分析结果已汇总完成"
 
 #获取任务结束时间，并计算耗时
@@ -101,6 +103,13 @@ echo -e "\n--------------------------------------------------------------"
 echo -e "所有任务已处理完成！！\n总日志大小：${log_size}      处理时间：${time}秒"
 echo -e "\n请在目录下查看分析结果"
 
+
+
+#cat top1ip_url_sort_top20.log top2ip_url_sort_top20.log top3ip_url_sort_top20.log top4ip_url_sort_top20.log top5ip_url_sort_top20.log top6ip_url_sort_top20.log top7ip_url_sort_top20.log top8ip_url_sort_top20.log top9ip_url_sort_top20.log top10ip_url_sort_top20.log top11ip_url_sort_top20.log top12ip_url_sort_top20.log top13ip_url_sort_top20.log top14ip_url_sort_top20.log top15ip_url_sort_top20.log top16ip_url_sort_top20.log top17ip_url_sort_top20.log top18ip_url_sort_top20.log top19ip_url_sort_top20.log top20ip_url_sort_top20.log top1url_ip_sort_top20.log top2url_ip_sort_top20.log top3url_ip_sort_top20.log top4url_ip_sort_top20.log top5url_ip_sort_top20.log top6url_ip_sort_top20.log top7url_ip_sort_top20.log top8url_ip_sort_top20.log top9url_ip_sort_top20.log top10url_ip_sort_top20.log top11url_ip_sort_top20.log top12url_ip_sort_top20.log top13url_ip_sort_top20.log top14url_ip_sort_top20.log top15url_ip_sort_top20.log top16url_ip_sort_top20.log top17url_ip_sort_top20.log top18url_ip_sort_top20.log top19url_ip_sort_top20.log top20url_ip_sort_top20.log > ip_url_sort.log
+#rm -rf top1ip_url_sort_top20.log top2ip_url_sort_top20.log top3ip_url_sort_top20.log top4ip_url_sort_top20.log top5ip_url_sort_top20.log top6ip_url_sort_top20.log top7ip_url_sort_top20.log top8ip_url_sort_top20.log top9ip_url_sort_top20.log top10ip_url_sort_top20.log top11ip_url_sort_top20.log top12ip_url_sort_top20.log top13ip_url_sort_top20.log top14ip_url_sort_top20.log top15ip_url_sort_top20.log top16ip_url_sort_top20.log top17ip_url_sort_top20.log top18ip_url_sort_top20.log top19ip_url_sort_top20.log top20ip_url_sort_top20.log
+#rm -rf top1ip_url_sort.log top2ip_url_sort.log top3ip_url_sort.log top4ip_url_sort.log top5ip_url_sort.log top6ip_url_sort.log top7ip_url_sort.log top8ip_url_sort.log top9ip_url_sort.log top10ip_url_sort.log top11ip_url_sort.log top12ip_url_sort.log top13ip_url_sort.log top14ip_url_sort.log top15ip_url_sort.log top16ip_url_sort.log top17ip_url_sort.log top18ip_url_sort.log top19ip_url_sort.log top20ip_url_sort.log
+#rm -rf top1url_ip_sort_top20.log top2url_ip_sort_top20.log top3url_ip_sort_top20.log top4url_ip_sort_top20.log top5url_ip_sort_top20.log top6url_ip_sort_top20.log top7url_ip_sort_top20.log top8url_ip_sort_top20.log top9url_ip_sort_top20.log top10url_ip_sort_top20.log top11url_ip_sort_top20.log top12url_ip_sort_top20.log top13url_ip_sort_top20.log top14url_ip_sort_top20.log top15url_ip_sort_top20.log top16url_ip_sort_top20.log top17url_ip_sort_top20.log top18url_ip_sort_top20.log top19url_ip_sort_top20.log top20url_ip_sort_top20.log
+#rm -rf top1url_ip_sort.log top2url_ip_sort.log top3url_ip_sort.log top4url_ip_sort.log top5url_ip_sort.log top6url_ip_sort.log top7url_ip_sort.log top8url_ip_sort.log top9url_ip_sort.log top10url_ip_sort.log top11url_ip_sort.log top12url_ip_sort.log top13url_ip_sort.log top14url_ip_sort.log top15url_ip_sort.log top16url_ip_sort.log top17url_ip_sort.log top18url_ip_sort.log top19url_ip_sort.log top20url_ip_sort.log
 
 
 #echo -e "\nURL访问量前三为："
