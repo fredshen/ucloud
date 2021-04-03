@@ -2,8 +2,8 @@
 #####################################################################################################
 #                                                                                                   #
 # Author: F.Shen                                                                                    #
-# Version: 1.1                                                                                      #
-# Release Date: 02/02/2021                                                                          #
+# Version: 1.3                                                                                      #
+# Release Date: 04/03/2021                                                                          #
 # Features:                                                                                         #
 # 1.Sort URLs&IPs in the original log                                                               #
 # 2.Sort the logs corresponding to URL and IP                                                       #
@@ -33,11 +33,15 @@
 # 1.Added IP Sort and URL sort                                                                      #
 # 2.Consolidate analysis results                                                                    #
 #                                                                                                   #
+# Version:1.3                                                                                       #
+# 1.Simplified some delete commands                                                                 #
+# 2.Fixed known bugs                                                                                #
+#                                                                                                   #
 #####################################################################################################
 
 #获取任务开始时间
 start_time=$(date +%s)
-echo -e "$(date +%Y-%m-%d\ %H:%M:%S)\n任务开始"
+echo -e "$(date +%Y-%m-%d\ %H:%M:%S)\n任务开始，现在正在处理原始日志..."
 
 #合并解压UCloud Console下载的原始日志，并获取原始日志大小
 log_name_00="替换为日志的文件名,不包含后缀(.gz)"
@@ -49,14 +53,14 @@ gunzip ${log_name_00}.gz ${log_name_01}.gz ${log_name_02}.gz ${log_name_03}.gz
 cat ${log_name_00} ${log_name_01} ${log_name_02} ${log_name_03} > initial.log
 rm -rf ${log_name_00} ${log_name_01} ${log_name_02} ${log_name_03}
 log_size=`ls -l -h initial.log |awk '{print $5}'`
-echo -e "$(date +%Y-%m-%d\ %H:%M:%S) Step 1/4:\n原始日志已合并完毕，即将分别进行IP和URL排序..."
+echo -e "$(date +%Y-%m-%d\ %H:%M:%S) Step 1/4:\n原始日志已合并完毕，正在分别进行IP和URL排序..."
 
 #分别截取日志文件的第三列（IP）第5列（URL），并将其重复项合并，从大到小进行排序
 awk '{print $3}' initial.log | sort |uniq -c | sort -n -r |less > ip_sort.log
 head -20 ip_sort.log > ip_sort_top20.log
 awk '{print $5}' initial.log | sort |uniq -c | sort -n -r |less > url_sort.log
 head -20 url_sort.log > url_sort_top20.log
-echo -e "$(date +%Y-%m-%d\ %H:%M:%S) Step 2/4:\nIP和URL已分别排序完成，即将从原始日志<initial.log>中获取TOP20URL对应的IP和TOP20IP的URL，并进行排序..."
+echo -e "$(date +%Y-%m-%d\ %H:%M:%S) Step 2/4:\nIP和URL已分别排序完成，正在从原始日志<initial.log>中获取TOP20URL对应的IP和TOP20IP的URL，并进行排序..."
 
 #遍历TOP20URL，并逐个排序IP
 echo "--------将TOP20URL逐个进行IP排序--------"
