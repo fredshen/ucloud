@@ -3,15 +3,18 @@
 #                                                                                                   #
 # Author: F.Shen                                                                                    #
 # Version: 1.3                                                                                      #
-# Release Date: 04/03/2021                                                                          #
-# Features:                                                                                         #
-# 1.Sort URLs&IPs in the original log                                                               #
-# 2.Sort the logs corresponding to URL and IP                                                       #
-# Export:                                                                                           #
-# a/Original log<initial.log>, b/URL&IP sorting log<url_sort.log> & <ip_sort.log>,                  #
-# c/Analysis result <ip_url_sort.log>,                                                              #
+# Release Date: 04/13/2021                                                                          #
 #                                                                                                   #
-# ** Let me know if there're any BUGs | fred.shen@ucloud.cn                                         #
+# Features:                                                                                         #
+# 1.将原始日志中的IP和URL由高到低依次排序                                                                 #
+# 2.前20名的IP，分别将请求的URL进行由高到低排序                                                            #
+# 3.前20名的URL，分别将请求来源IP进行由高到低排序                                                          #
+#                                                                                                   #
+# Export:                                                                                           #
+# a/原始日志<initial.log>         b/完整IP排序<ip_sort.log>                                            #
+# c/完整URL排序<url_sort.log>     d/分析报告 <ip_url_sort.log>                                         #
+#                                                                                                   #
+# ** Let me know if there are any BUGs | fred.shen@ucloud.cn                                        #
 #                                                                                                   #
 #####################################################################################################
 
@@ -49,6 +52,7 @@ log_name_01="2021012907_static.xigou100.com_CDN.log_00"
 log_name_02="2021012908_static.xigou100.com_CDN.log_00"
 log_name_03="2021012909_static.xigou100.com_CDN.log_00"
 
+####gunzip命令应该还可以简略，将解压和合并文件放在一起？
 gunzip ${log_name_00}.gz ${log_name_01}.gz ${log_name_02}.gz ${log_name_03}.gz
 cat ${log_name_00} ${log_name_01} ${log_name_02} ${log_name_03} > initial.log
 rm -rf ${log_name_00} ${log_name_01} ${log_name_02} ${log_name_03}
@@ -60,10 +64,10 @@ awk '{print $3}' initial.log | sort |uniq -c | sort -n -r |less > ip_sort.log
 head -20 ip_sort.log > ip_sort_top20.log
 awk '{print $5}' initial.log | sort |uniq -c | sort -n -r |less > url_sort.log
 head -20 url_sort.log > url_sort_top20.log
-echo -e "$(date +%Y-%m-%d\ %H:%M:%S) Step 2/4:\nIP和URL已分别排序完成，正在从原始日志<initial.log>中获取TOP20URL对应的IP和TOP20IP的URL，并进行排序..."
+echo -e "$(date +%Y-%m-%d\ %H:%M:%S) Step 2/4:\nIP和URL已分别排序完成，正在从原始日志<initial.log>中获取TOP20URL对应的IP和TOP20IP对应的URL，并进行排序..."
 
 #遍历TOP20URL，并逐个排序IP
-echo "--------将TOP20URL逐个进行IP排序--------"
+echo "--------正在将TOP20URL逐个进行IP排序...--------"
 for a in {1..20}
 do
         b=`sed -n "${a}p" url_sort_top20.log |awk '{print $2}'`
@@ -74,7 +78,7 @@ do
         echo -e "TOP${a}URL对应IP已排序完成"
 done
 #遍历TOP20IP，并逐个排序URL
-echo "--------将TOP20IP逐个进行URL排序--------"
+echo "--------正在将TOP20IP逐个进行URL排序...--------"
 for d in {1..20}
 do
         e=`sed -n "${d}p" ip_sort_top20.log |awk '{print $2}'`
