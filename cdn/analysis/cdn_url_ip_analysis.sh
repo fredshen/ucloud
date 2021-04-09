@@ -44,7 +44,7 @@
 
 #获取任务开始时间
 start_time=$(date +%s)
-echo -e "$(date +%Y-%m-%d\ %H:%M:%S)\n任务开始，现在正在处理原始日志..."
+echo -e "$(date +%Y-%m-%d\ %H:%M:%S)\n任务开始，正在处理原始日志..."
 
 #合并解压UCloud Console下载的原始日志，并获取原始日志大小
 log_name_00="替换为日志的文件名,不包含后缀(.gz)"
