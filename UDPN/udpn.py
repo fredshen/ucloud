@@ -4,13 +4,19 @@ import requests
 import json
 import time,datetime
 
-month = int(input('输入要查询的月份：'))
+udpn_id = input('Enter your UDPN ID:')
+month = int(input('Enter the month:'))
+
+#Judge the number of days in the month by 'month'
 if month in [1,3,5,7,8,10,12]:
-  day = 31
+    day = 31
 elif month in [4,6,9,11]:
-  day = 30
+    day = 30
+elif month == 2:
+    day = 28
 else:
-  day = 28
+    print('Incorrect input, please try again')
+
 
 start_time =('20210'+str(month)+'01')
 startTime = time.mktime((time.strptime(start_time, "%Y%m%d")))
