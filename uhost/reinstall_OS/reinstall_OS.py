@@ -13,6 +13,9 @@ import time
 pubulicKey = "4eZBKoQnYDiAjVI6SPmPiRH47Sj4Fhxlu"
 privateKey = "9AXyD8mINFgHlrblFp1tAPIcUBwfojXiBKgoPyEzgi6W"
 
+#打印当前时间
+#print('时间:%s'%time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) 
+
 #对操作系统版本进行选择
 tmp_choice_imageId = 100
 while tmp_choice_imageId > 5 or tmp_choice_imageId < 1:
@@ -57,7 +60,7 @@ def main():
 		print(resp)
 	print("正在关机。。。")
 	#预估关机时间8秒
-	time.sleep(8)
+	time.sleep(10)
 	print("------------------------------\n关机成功，正在重装系统。。。")
 	#重装系统
 	try:
@@ -72,8 +75,7 @@ def main():
 		print(e)
 	else:
 		print(resp)
-		time.sleep(15)
-		print("------------------------------\n系统重装成功!\n操作系统版本为："+ OS +"\n密码为：SS**2@")
+		print("------------------------------\n系统重装成功!等待20s左右开机完成~\n操作系统版本为："+ OS +"\n密码为：SS**2@")
 
 if __name__ == '__main__':
 	main()
