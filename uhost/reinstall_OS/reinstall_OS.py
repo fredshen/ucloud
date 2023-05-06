@@ -35,7 +35,7 @@ while tmp_choice_imageId > 5 or tmp_choice_imageId < 1:
 	else:
 		print("------------------------------\n输入有误，请重新选择！\n")
 
-#对实力进行关机并重装系统
+#关机并重装系统
 def main():
 	client = Client({
 	"region": "cn-sh2",
@@ -56,7 +56,8 @@ def main():
 	else:
 		print(resp)
 	print("正在关机。。。")
-	time.sleep(10)
+	#预估关机时间8秒
+	time.sleep(8)
 	print("------------------------------\n关机成功，正在重装系统。。。")
 	#重装系统
 	try:
@@ -71,8 +72,8 @@ def main():
 		print(e)
 	else:
 		print(resp)
+		time.sleep(15)
 		print("------------------------------\n系统重装成功!\n操作系统版本为："+ OS +"\n密码为：SS**2@")
 
 if __name__ == '__main__':
 	main()
-	
