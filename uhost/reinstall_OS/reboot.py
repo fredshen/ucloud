@@ -9,6 +9,7 @@ from ucloud.core import exc
 from ucloud.client import Client
 import time
 
+#修改为个人秘钥
 pubulicKey = "4eXvtltJL2h30eiaGMPsi37tu0Wi2UKFz"
 privateKey = "29SOSFBqNRR5lvo5gKQ5ovAuFXZjNQoXJ1vHSsHokY40"
 
