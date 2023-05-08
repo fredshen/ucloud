@@ -10,6 +10,7 @@ from ucloud.client import Client
 import time
 
 #修改为个人秘钥
+#账号：ibu_cretec@ucloud.cn  16c3f8B01
 pubulicKey = "4eXvtltJL2h30eiaGMPsi37tu0Wi2UKFz"
 privateKey = "29SOSFBqNRR5lvo5gKQ5ovAuFXZjNQoXJ1vHSsHokY40"
 
