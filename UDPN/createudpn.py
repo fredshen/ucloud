@@ -7,6 +7,8 @@ Document: https://docs.ucloud.cn/opensdk-python/README
 """
 from ucloud.core import exc
 from ucloud.client import Client
+import time
+import json
 
 #修改为个人秘钥
 #账号：443726357@qq.com
@@ -16,7 +18,7 @@ privateKey = "8Is6Vgn11quIuUDxOQz6xqLWVr5Gj8nnfJNH73xTQudV30P1L9kQbBRJIrk2qcAT3J
 print("第一步：创建UDPN")
 tmp_choice_peer1 = 100
 tmp_choice_peer2 = 100
-while tmp_choice_peer1 > 3 or tmp_choice_peer1 < 1 or type(tmp_choice_peer1):
+while tmp_choice_peer1 > 3 or tmp_choice_peer1 < 1:
 	tmp_choice_peer1 = int(input("选择UDPN的A端区域：\n1:北京\n2:上海\n3:广州\n你的选择是（直接输入数字）："))
 	if tmp_choice_peer1 == 1:
 		Region_A = "cn-bj2"
@@ -69,8 +71,9 @@ def main():
 		udpn_id = resp.get("UDPNId",[])
 		print("------------------------------\n区域为：" + Region_A + "至"+  Region_B +"\nUDPN ID:" + udpn_id)
 
-		#log_file1 = open('/Users/fredshen/Downloads/uwork/lab/logs/udpn_test.log','a',encoding='utf-8')
-		#file1.write(time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))   )
+		log_file1 = open('/Users/fredshen/Downloads/uwork/lab/logs/udpn_test/udpn_test.log','a',encoding='utf-8')
+		log_file1.write(time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
+		log_file1.write(" created " + Region_A + " " + Region_B + " " + udpn_id)
 	
 if __name__ == '__main__':
 	main()
