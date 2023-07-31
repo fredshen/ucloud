@@ -1,4 +1,4 @@
 #!/usr/bin/env python3
-import config1
+import config
 
-config1.jy()
+config.jy()
