@@ -2,3 +2,4 @@
 import config
 
 config.jy()
+print(pubulicKey)

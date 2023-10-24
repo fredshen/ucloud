@@ -11,3 +11,4 @@ udpnId = "udpn-lygdi78yzxf"#修改为个人ID
 
 def jy():
 	print('demo')
+	print(1)
