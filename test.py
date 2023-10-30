@@ -8,6 +8,8 @@ from ucloud.core import exc
 from ucloud.client import Client
 
 
+#修改为个人秘钥
+#账号：shenchaook@gmail.com
 pubulicKey = "4eZBKoQnYDiAjVI6SPmPiRH47Sj4Fhxlu"
 privateKey = "9AXyD8mINFgHlrblFp1tAPIcUBwfojXiBKgoPyEzgi6W"
 
@@ -15,8 +17,8 @@ privateKey = "9AXyD8mINFgHlrblFp1tAPIcUBwfojXiBKgoPyEzgi6W"
 def main():
     client = Client({
     "region": "cn-sh2",
-    "public_key": "Input public key at here",
-    "private_key": "Input private key at here",
+    "public_key": pubulicKey,
+    "private_key": privateKey,
     "project_id": "org-fye3q5",
     "base_url": "https://api.ucloud.cn"
 })
