@@ -38,3 +38,12 @@ def main():
 if __name__ == '__main__':
     main()
     
+    
+    
+if usage < 60:
+    new_bandwith = old_bandwith * 0.8
+elif usage > 60 and usage <80:
+    new_bandwith = old_bandwith * 0.9
+elif usage >= 80:
+    new_bandwith = real_usage * 1.2
+    

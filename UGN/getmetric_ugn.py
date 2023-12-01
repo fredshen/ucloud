@@ -38,7 +38,6 @@ except exc.RetCodeException as e:
 
 
 
-'''
 ResourceType: ugnbw
 中文名：云联网带宽包
 
@@ -47,4 +46,3 @@ UgnBWOutPeakUsage 出向峰值带宽使用率
 UgnBWOutbps 出向带宽
 UgnBWOutPeakbps 出向峰值带宽
 UgnBWOutUsage 出向带宽使用率
-'''
