@@ -38,9 +38,9 @@ def main():
 	resp2 = client.invoke("GetMetric", {
 		"Region": "cn-sh2",
 		"Zone": "cn-sh2-01",
-		"ProjectId": "org-en5c1p",
+		"ProjectId": Project_ID,
 		"ResourceType": "ugnbw",
-		"ResourceId": "bw-qv7mfeyujk3",
+		"ResourceId": Package_ID,
 		"TimeRange": 500,
 		"MetricName.0": "UgnBWOutPeakUsage"
 	})
@@ -66,9 +66,9 @@ def main():
 		
 	#调整带宽值
 	resp = client.invoke("ModifyUGNBandwidth", {
-		"ProjectId": "org-en5c1p",
-		"PackageID": "bw-qv7mfeyujk3",
-		"UGNID": "ugn-qr34zqz4xuh",
+		"ProjectId": Project_ID,
+		"PackageID": Package_ID,
+		"UGNID": UGN_ID,
 		"BandWidth": New_Bandwith
 	})
 	
