@@ -16,6 +16,7 @@ Private_Key = "FNoqMqrZqMY5mGpOFeudMzF8EfCtcvq838jVLBmOXavkFzkXlX3NjCE5Mf5OUmrwd
 Package_ID = "bw-qv7mfeyujk3"
 UGN_ID = "ugn-qr34zqz4xuh"
 Project_ID = "org-en5c1p"
+Log_Path = ""
 
 client = Client({
 	"public_key": Pubulic_Key,
@@ -65,7 +66,7 @@ def main():
 		New_Bandwith = int(Current_Bandwith * Current_UgnBWOut_PeakUsage *1.2 / 100 + 1)
 		
 	#调整带宽值
-	resp = client.invoke("ModifyUGNBandwidth", {
+	resp3 = client.invoke("ModifyUGNBandwidth", {
 		"ProjectId": Project_ID,
 		"PackageID": Package_ID,
 		"UGNID": UGN_ID,
