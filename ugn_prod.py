@@ -16,7 +16,9 @@ Private_Key = "FNoqMqrZqMY5mGpOFeudMzF8EfCtcvq838jVLBmOXavkFzkXlX3NjCE5Mf5OUmrwd
 Package_ID = "bw-qv7mfeyujk3"
 UGN_ID = "ugn-qr34zqz4xuh"
 Project_ID = "org-en5c1p"
-Log_Path = ""
+Log_Path = "/Users/fredshen/Downloads/uwork/API_test"
+
+Current_Time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
 client = Client({
 	"public_key": Pubulic_Key,
@@ -34,6 +36,7 @@ def main():
 	
 	Current_Bandwith = resp1.get("BwPackages")[-1].get("BandWidth")
 	print(Current_Bandwith)
+	Log_GetSimpleUGNBwPackages = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())  +" "+UGN_ID + " "+str(resp1.get("RetCode"))+" " + str(resp1.get("Action")) +" " + str(resp1.get("BwPackages")[-1].get("BandWidth"))+" " + str(resp1.get("BwPackages")[-1].get("RegionA"))+" " + str(resp1.get("BwPackages")[-1].get("RegionB"))
 	
 	#获取监控值
 	resp2 = client.invoke("GetMetric", {
