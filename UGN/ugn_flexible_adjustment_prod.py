@@ -35,9 +35,9 @@ Sensitivity = 2 #灵敏度：推荐填2（1.成本优先、2.成本、业务均�
 
 if Sensitivity == 1:
 	Pace = [0.8,0.85,0.9,0.95,1,1.05,1.1,1.15,1.2,1.25]
-elif Sensitivity ==2:
+elif Sensitivity == 2:
 	Pace = [0.8,0.85,0.9,0.95,1,1.05,1.1,1.15,1.2,1.25]
-elif Sensitivity ==3:
+elif Sensitivity == 3:
 	Pace = [0.8,0.85,0.9,0.95,1,1.05,1.1,1.15,1.2,1.25]
 else:
 	print("缺少必要信息")
@@ -61,7 +61,7 @@ def check():
 	except exc.RetCodeException as e:
 		resp1 = e.json()
 	Current_Bandwith = resp1.get("BwPackages")[-1].get("BandWidth")
-	Log_GetSimpleUGNBwPackages = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())  +" "+UGN_ID + " "+str(resp1.get("RetCode"))+" " + str(resp1.get("Action")) +" " + str(resp1.get("BwPackages")[-1].get("BandWidth"))+" " + str(resp1.get("BwPackages")[-1].get("RegionA"))+" " + str(resp1.get("BwPackages")[-1].get("RegionB"))
+	Log_GetSimpleUGNBwPackages = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())  +" "+UGN_ID +" "+Package_ID + " "+str(resp1.get("RetCode"))+" " + str(resp1.get("Action")) +" " + str(resp1.get("BwPackages")[-1].get("BandWidth"))+" " + str(resp1.get("BwPackages")[-1].get("RegionA"))+" " + str(resp1.get("BwPackages")[-1].get("RegionB"))
 	#print(Log_GetSimpleUGNBwPackages)
 	
 	#获取监控值
@@ -79,7 +79,7 @@ def check():
 		resp2 = e.json()
 	Current_UgnBWOut_PeakUsage = resp2.get("DataSets").get("UgnBWOutPeakUsage")[-1].get("Value")
 	#print(Current_UgnBWOut_PeakUsage)
-	Log_GetMetric = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())  +" "+UGN_ID + " "+str(resp2.get("RetCode"))+" " + str(resp2.get("Action")) +" " + str(resp2.get("DataSets").get("UgnBWOutPeakUsage")[-1].get("Value"))+" " + str(resp1.get("BwPackages")[-1].get("RegionA"))+" " + str(resp1.get("BwPackages")[-1].get("RegionB"))
+	Log_GetMetric = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())  +" "+UGN_ID +" "+Package_ID + " "+str(resp2.get("RetCode"))+" " + str(resp2.get("Action")) +" " + str(resp2.get("DataSets").get("UgnBWOutPeakUsage")[-1].get("Value"))+" " + str(resp1.get("BwPackages")[-1].get("RegionA"))+" " + str(resp1.get("BwPackages")[-1].get("RegionB"))
 	#print(Log_GetMetric)
 	
 	
@@ -128,7 +128,7 @@ def check():
 			New_Bandwith = 1
 		elif New_Bandwith == Current_Bandwith:
 			New_Bandwith = Current_Bandwith + 1
-	Log_Judge = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())  +" "+UGN_ID + " "+ "/" +" " + "Judge" +" " + str(round(New_Bandwith/Current_Bandwith,2))+" " + str(resp1.get("BwPackages")[-1].get("RegionA"))+" " + str(resp1.get("BwPackages")[-1].get("RegionB"))	
+	Log_Judge = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())  +" "+UGN_ID +" "+Package_ID + " "+ "/" +" " + "Judge" +" " + str(round(New_Bandwith/Current_Bandwith,2))+" " + str(resp1.get("BwPackages")[-1].get("RegionA"))+" " + str(resp1.get("BwPackages")[-1].get("RegionB"))	
 	
 	#调整带宽
 	try:
@@ -141,7 +141,7 @@ def check():
 	except exc.RetCodeException as e:
 		resp3 = e.json()
 
-	Log_ModifyUGNBandwidth = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())  +" "+UGN_ID + " "+str(resp3.get("RetCode"))+" " + str(resp3.get("Action")) +" " + str(New_Bandwith)+" " + str(resp1.get("BwPackages")[-1].get("RegionA"))+" " + str(resp1.get("BwPackages")[-1].get("RegionB"))		
+	Log_ModifyUGNBandwidth = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())  +" "+UGN_ID+" "+Package_ID + " "+str(resp3.get("RetCode"))+" " + str(resp3.get("Action")) +" " + str(New_Bandwith)+" " + str(resp1.get("BwPackages")[-1].get("RegionA"))+" " + str(resp1.get("BwPackages")[-1].get("RegionB"))		
 	
 	#写日志
 	try:
