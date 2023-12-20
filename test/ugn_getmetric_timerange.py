@@ -13,24 +13,26 @@ import time
 Pubulic_Key = "2DVUfAN0VeWFBIV3OBjn9W9tWB5VqB7iOIN9OVuX7"
 Private_Key = "FNoqMqrZqMY5mGpOFeudMzF8EfCtcvq838jVLBmOXavkFzkXlX3NjCE5Mf5OUmrwdf"
 
-
-Package_ID = "default-bw-rh0c0u3tcs1"
+Package_ID = "bw-rmq0ks7rv2e"
 UGN_ID = "ugn-qr34zqz4xuh"
 Project_ID = "org-en5c1p"
+Region = "cn-gd"
+Zone = "cn-gd-02"
 #Log_Path = "/Users/fredshen/Downloads/uwork/API_test"
 
+#请勿随意修改以下信息
+client = Client({
+	"public_key": Pubulic_Key,
+	"private_key": Private_Key,
+	"project_id": Project_ID,
+	"base_url": "https://api.ucloud.cn"
+})
 
-def check():
-	client = Client({
-		"public_key": Pubulic_Key,
-		"private_key": Private_Key,
-		"project_id": "Input project ID at here",
-		"base_url": "https://api.ucloud.cn"
-	})
-	
+
+def main():
 	resp = client.invoke("GetMetric", {
-		"Region": "cn-sh2",
-		"Zone": "cn-sh2-01",
+		"Region": Region,
+		"Zone": Zone,
 		"ProjectId": Project_ID,
 		"ResourceType": "ugnbw",
 		"ResourceId": Package_ID,
@@ -38,7 +40,7 @@ def check():
 		"MetricName.0": "UgnBWOutPeakUsage"
 	})
 	
-	print("------------")
+	print("------------复制以下信息------------")
 	
 	
 	Usage_Data = resp["DataSets"].get("UgnBWOutPeakUsage")
@@ -58,14 +60,7 @@ def check():
 	print(Frequency)
 
 
-'''
-def main():
-	while True:
-		check()
-		time.sleep(5)
-		
-		
 if __name__ == '__main__':
 	main()
 	
-'''
+	
