@@ -65,9 +65,25 @@ def check():
 	})
 	except exc.RetCodeException as e:
 		resp2 = e.json()
+	Net_Out = resp2["DataSets"].get("NetworkOutUsage")[-1].get("Value")
 	
-	Current_NetworkOutUsage =  resp2["DataSets"].get("NetworkOutUsage")[-1].get("Value")
-	#print(Current_NetworkOutUsage)
+	try:
+		resp3 = client.invoke("GetMetric", {
+			"Region": Region,
+			"ProjectId": Project_ID,
+			"ResourceType": "sharebandwidth",
+			"ResourceId": ShareBandwidthId,
+			"TimeRange": 200,
+			"MetricName.0": "NetworkInUsage"
+	})
+	except exc.RetCodeException as e:
+		resp3 = e.json()
+	Net_In = resp3["DataSets"].get("NetworkInUsage")[-1].get("Value")
+	if Net_Out > Net_In:
+		Current_NetworkOutUsage = Net_Out
+	else:
+		Current_NetworkOutUsage = Net_In
+
 	Log_GetMetric = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())  +" "+ShareBandwidthId +" " + str(resp2["DataSets"].get("NetworkOutUsage")[-1].get("Value"))+" " + str(resp2.get("Action")) + " "+str(resp2.get("RetCode"))	#print(Log_GetMetric)
 	
 	
@@ -96,7 +112,7 @@ def check():
 	
 	#调整带宽
 	try:
-		resp3 = client.unet().resize_share_bandwidth({
+		resp4 = client.unet().resize_share_bandwidth({
 			"ShareBandwidth": New_Bandwith,
 			"ShareBandwidthId": ShareBandwidthId
 			
@@ -104,9 +120,9 @@ def check():
 	except exc.UCloudException as e:
 		print(e)
 	else:
-		print(resp3)	
+		print(resp4)	
 	
-	Log_resize_share_bandwidth = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())  +" "+ShareBandwidthId +" " + str(New_Bandwith)+" " + str(resp3.get("Action"))+ " "+str(resp3.get("RetCode")) 	
+	Log_resize_share_bandwidth = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())  +" "+ShareBandwidthId +" " + str(New_Bandwith)+" " + str(resp4.get("Action"))+ " "+str(resp4.get("RetCode")) 	
 	
 		
 	
