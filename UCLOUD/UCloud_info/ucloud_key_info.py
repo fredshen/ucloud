@@ -22,3 +22,8 @@ privateKey = "29SOSFBqNRR5lvo5gKQ5ovAuFXZjNQoXJ1vHSsHokY40"
 #账号：443726357@qq.com
 pubulicKey = "7UhCg2TCZym21Kens32UEOLcTp3vDZkn1KW8hrlTC"
 privateKey = "8Is6Vgn11quIuUDxOQz6xqLWVr5Gj8nnfJNH73xTQudV30P1L9kQbBRJIrk2qcAT3J"
+
+#修改为个人秘钥
+#账号：ibu-bot@ucloud.cn
+pubulicKey = "4eZBe1JSbOaDrvqa0VoM1V5E3VYkiOTua"
+privateKey = "8BS9OGIisT58x76QWlK3zk8dZEmk702NM7BBuM5dZdGU"
