@@ -25,24 +25,15 @@ Pubulic_Key = "2DVUfAN0VeWFBIV3OBjn9W9tWB5VqB7iOIN9OVuX7"
 Private_Key = "FNoqMqrZqMY5mGpOFeudMzF8EfCtcvq838jVLBmOXavkFzkXlX3NjCE5Mf5OUmrwdf"
 
 #基础信息配置
-Package_ID = "bw-rmq0ks7rv2e"
+Package_ID = "bw-rv6kn6cribc"
 UGN_ID = "ugn-qr34zqz4xuh"
 Region = "cn-gd"#填写出口大的一端
 Zone = "cn-gd-02"#填写出口大的一端
 Project_ID = "org-en5c1p"
 Log_Path = "/Users/fredshen/Downloads/uwork/API_test/ugn_flexible_adjustment_prod.log"
-Sensitivity = 2 #灵敏度：推荐填2（1.成本优先、2.成本、业务均衡、3.业务稳定优先）
 Upper_Limit = 8000#上限值
 Minimum_Limit = 20#下限值
-
-if Sensitivity == 1:
-	Pace = [0.8,0.85,0.9,0.95,1,1.05,1.1,1.15,1.2,1.25]
-elif Sensitivity == 2:
-	Pace = [0.8,0.85,0.9,0.95,1,1.05,1.1,1.15,1.2,1.25]
-elif Sensitivity == 3:
-	Pace = [0.8,0.85,0.9,0.95,1,1.05,1.1,1.15,1.2,1.25]
-else:
-	print("缺少必要信息")
+Pace = [0.8,0.85,0.9,0.95,1,1.05,1.1,1.15,1.2,1.25]
 
 #基础信息
 client = Client({
@@ -87,45 +78,53 @@ def check():
 	
 	#判断
 	if Current_UgnBWOut_PeakUsage < 60:
-		New_Bandwith = int(Current_Bandwith * Pace[0])
-		if New_Bandwith == 0:
-			New_Bandwith = 1
+		New_Bandwith = int(Current_Bandwith * Pace[0])#0.8
+		if New_Bandwith < Minimum_Limit:
+			New_Bandwith = Minimum_Limit
 			if New_Bandwith == Current_Bandwith:
 				New_Bandwith = Current_Bandwith + 1
 		elif New_Bandwith == Current_Bandwith:
 			New_Bandwith = Current_Bandwith + 1
 	elif Current_UgnBWOut_PeakUsage >= 60 and Current_UgnBWOut_PeakUsage < 70:
-		New_Bandwith = int(Current_Bandwith * Pace[2])
-		if New_Bandwith == 0:
-			New_Bandwith = 1
+		New_Bandwith = int(Current_Bandwith * Pace[2])#0.9
+		if New_Bandwith < Minimum_Limit:
+			New_Bandwith = Minimum_Limit
+			if New_Bandwith == Current_Bandwith:
+				New_Bandwith = Current_Bandwith + 1
 		elif New_Bandwith == Current_Bandwith:
 			New_Bandwith = Current_Bandwith + 1
 	elif Current_UgnBWOut_PeakUsage >= 70 and Current_UgnBWOut_PeakUsage < 80:
-		New_Bandwith = int(Current_Bandwith * Pace[3])
-		if New_Bandwith == 0:
-			New_Bandwith = 1
+		New_Bandwith = int(Current_Bandwith * Pace[3])#0.95
+		if New_Bandwith < Minimum_Limit:
+			New_Bandwith = Minimum_Limit
+			if New_Bandwith == Current_Bandwith:
+				New_Bandwith = Current_Bandwith + 1
 		elif New_Bandwith == Current_Bandwith:
 			New_Bandwith = Current_Bandwith + 1
 	elif Current_UgnBWOut_PeakUsage >= 80 and Current_UgnBWOut_PeakUsage < 90:
-		New_Bandwith = int(Current_Bandwith * Pace[5])
-		if New_Bandwith == 0:
-			New_Bandwith = 1
+		New_Bandwith = int(Current_Bandwith * Pace[5])#1.05
+		if New_Bandwith < Minimum_Limit:
+			New_Bandwith = Minimum_Limit
+			if New_Bandwith == Current_Bandwith:
+				New_Bandwith = Current_Bandwith + 1
 		elif New_Bandwith == Current_Bandwith:
 			New_Bandwith = Current_Bandwith + 1
 	elif Current_UgnBWOut_PeakUsage >= 90 and Current_UgnBWOut_PeakUsage < 100:
-		New_Bandwith = int(Current_Bandwith * Pace[6])
-		if New_Bandwith == 0:
-			New_Bandwith = 1
+		New_Bandwith = int(Current_Bandwith * Pace[6])#1.1
+		if New_Bandwith < Minimum_Limit:
+			New_Bandwith = Minimum_Limit
+			if New_Bandwith == Current_Bandwith:
+				New_Bandwith = Current_Bandwith + 1
 		elif New_Bandwith == Current_Bandwith:
 			New_Bandwith = Current_Bandwith + 1
 	elif Current_UgnBWOut_PeakUsage >= 100 and Current_UgnBWOut_PeakUsage < 110:
-		New_Bandwith = int(Current_Bandwith * Pace[7])
+		New_Bandwith = int(Current_Bandwith * Pace[7])#1.15
 		if New_Bandwith > Upper_Limit:
 			New_Bandwith = Upper_Limit
 			if New_Bandwith == Current_Bandwith:
 				New_Bandwith = Current_Bandwith + 1
 	else:#即：>=110
-		New_Bandwith = int(Current_Bandwith * Current_UgnBWOut_PeakUsage * Pace[8] / 100)
+		New_Bandwith = int(Current_Bandwith * Current_UgnBWOut_PeakUsage * Pace[8] / 100)#1.2
 		if New_Bandwith > Upper_Limit:
 			New_Bandwith = Upper_Limit
 			if New_Bandwith == Current_Bandwith:

@@ -13,8 +13,8 @@ import time
 Pubulic_Key = "2DVUfAN0VeWFBIV3OBjn9W9tWB5VqB7iOIN9OVuX7"
 Private_Key = "FNoqMqrZqMY5mGpOFeudMzF8EfCtcvq838jVLBmOXavkFzkXlX3NjCE5Mf5OUmrwdf"
 
-Package_ID = "bw-rv6kn6cribc"
-UGN_ID = "ugn-qr34zqz4xuh"
+#
+UDPN_ID = "udpn-rv281e2zx6z"
 Project_ID = "org-en5c1p"
 Region = "cn-gd"
 Zone = "cn-gd-02"
@@ -32,18 +32,18 @@ client = Client({
 def main():
 	resp = client.invoke("GetMetric", {
 		"Region": Region,
-		"Zone": Zone,
+		#"Zone": Zone,
 		"ProjectId": Project_ID,
-		"ResourceType": "ugnbw",
-		"ResourceId": Package_ID,
+		"ResourceType": "udpn",
+		"ResourceId": UDPN_ID,
 		"TimeRange": 3000,
-		"MetricName.0": "UgnBWOutPeakUsage"
+		"MetricName.0": "BandOutMaxUsage"
 	})
 	
 	print("------------复制以下信息------------")
 	
 	
-	Usage_Data = resp["DataSets"].get("UgnBWOutPeakUsage")
+	Usage_Data = resp["DataSets"].get("BandOutMaxUsage")
 	
 	Time_Range = []
 	Frequency = []
