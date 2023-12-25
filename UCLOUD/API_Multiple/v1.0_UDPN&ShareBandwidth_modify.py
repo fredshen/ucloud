@@ -26,8 +26,8 @@ Private_Key = "FNoqMqrZqMY5mGpOFeudMzF8EfCtcvq838jVLBmOXavkFzkXlX3NjCE5Mf5OUmrwd
 
 #通用信息
 Project_ID = "org-en5c1p"
-Region_A = "cn-gd"
-Region_B = "cn-sh2"
+Region_A = "cn-sh2"
+Region_B = "cn-gd"
 Pace = [0.8,0.85,0.9,0.95,1,1.05,1.1,1.15,1.2,1.25]
 Log_Path_UDPN = "/Users/fredshen/Downloads/uwork/API_test/udpn_modify.log"
 Log_Path_ShareBandWidth = "/Users/fredshen/Downloads/uwork/API_test/sharebandwidth_modify.log"
@@ -38,24 +38,26 @@ Max_Limit_UDPN = 8000#带宽可调节上限值
 Min_Limit_UDPN = 2#带宽可调节下限值（最小值2）
 
 #ShareBnadwidth Info
-Region_A_ShareBandwidthId = "xxx"
-Region_B_ShareBandwidthId = "xxx"
+Region_A_ShareBandwidthId = "bwshare-rvfzwh62z5v"#与Region_A对应
+Region_B_ShareBandwidthId = "xxx"#与Region_B对应
 Max_Limit_ShareBandwidth = 8000#带宽可调节上限值
 Min_Limit_ShareBandwidth = 20#带宽可调节下限值（最小值20）
 
 #---------请勿修改以下区域----------
 client = Client({
-	"region": Region_A,
+	#"region": Region_A,
 	"public_key": Pubulic_Key,
 	"private_key": Private_Key,
 	"project_id": Project_ID,
 	"base_url": "https://api.ucloud.cn"
 })
 
+#UDPN
 def describe_udpn():	
 	try:
 		resp1 = client.udpn().describe_udpn({
-			"UDPNId": UDPN_ID
+			"UDPNId": UDPN_ID,
+			"region": Region_A
 				
 		})
 	except exc.UCloudException as e:
@@ -65,7 +67,7 @@ def describe_udpn():
 		#a_Bandwidth = resp1.get('DataSet')[0].get('Bandwidth')	
 	return(resp1)
 
-def get_metric(Region):
+def get_metric_udpn(Region):
 	try:
 		resp2 = client.invoke("GetMetric", {
 			"Region": Region,
@@ -82,11 +84,12 @@ def get_metric(Region):
 		resp2 = e.json()
 	return(resp2)
 
-def modify_udpn_bandwidth(New_Bandwidth):
+def modify_udpn_bandwidth(New_Bandwidth_UDPN):
 	try:
 		resp3 = client.udpn().modify_udpn_bandwidth({
 			"UDPNId": UDPN_ID,
-			"Bandwidth": New_Bandwidth
+			"region": Region_A,
+			"Bandwidth": New_Bandwidth_UDPN
 			
 		})
 	except exc.UCloudException as e:
@@ -111,84 +114,211 @@ def log(Log_DescribeUDPN,Log_GetMetric,Log_Judge,Log_ModifyUDPN,Log_Summary):
 		print("日志成功写入！")
 	except Exception as e:
 		print("发生错误：", str(e))
-		
+
+#共享带宽
+#获取带宽值
+def describe_share_bandwidth(ShareBandwidthId):
+	try:
+		resp4 = client.unet().describe_share_bandwidth({
+			"ShareBandwidthIds": [
+				ShareBandwidthId
+			]
+		})
+	except exc.UCloudException as e:
+		print(e)
+	else:
+		print(resp4)
+	return(resp4)
+
+#获取监控值
+def getmetric_share(Region,ShareBandwidthId):
+	try:
+		resp5 = client.invoke("GetMetric", {
+			"Region": Region,
+			#"Zone": "cn-sh2-01",
+			"ProjectId": Project_ID,
+			"ResourceType": "sharebandwidth",
+			"ResourceId": ShareBandwidthId,
+			"TimeRange": 200,
+			"MetricName.0": "BandIn",
+			"MetricName.1": "BandOut",
+			"MetricName.2": "NetworkInUsage",
+			"MetricName.3": "NetworkOutUsage"
+	})
+	except exc.RetCodeException as e:
+		resp5 = e.json()
+	return(resp5)
+
+#判断
+
+
+
+#调整带宽
+def resize_share_bandwidth(Region,New_Bandwidth_Share,ShareBandwidthId):
+	try:
+		resp = client.unet().resize_share_bandwidth({
+			"Region": Region,
+			"ShareBandwidth": New_Bandwidth_Share,
+			"ShareBandwidthId": ShareBandwidthId
 			
+		})
+	except exc.UCloudException as e:
+		print(e)
+	else:
+		print(resp)
 
 
-def modify():
+#写日志
+def log(Log_DescribeShare,Log_GetMetric_share,Log_Judge_share,Log_Modifyshare,Log_Summary_share):
+	#写日志
+	try:
+		# 打开文件并设置为追加模式（'a'表示追加）
+		with open(Log_Path_UDPN, 'a') as file:
+			# 将内容写入文件中
+			file.write(Log_DescribeUDPN)
+			file.write(Log_GetMetric)
+			file.write(Log_Judge)
+			file.write(Log_ModifyUDPN)
+			file.write(Log_Summary+"\n")
+			
+		print("---------带宽调整成功---------")
+		print("日志成功写入！")
+	except Exception as e:
+		print("发生错误：", str(e))
+
+
+
+
+
+
+
+
+
+def modify_udpn():
 	#获取带宽值
-	Current_Bandwidth = describe_udpn().get('DataSet')[0].get('Bandwidth')
+	Current_Bandwidth_UDPN = describe_udpn().get('DataSet')[0].get('Bandwidth')
 
 	
 	#获取监控值
-	Metric_A = get_metric(Region_A).get("DataSets")
-	Metric_BandOut_A = Metric_A.get("BandOut")[-1].get("Value")
-	Metric_BandOutMax_A = Metric_A.get("BandOutMax")[-1].get("Value")
-	Metric_BandOutUsage_A = Metric_A.get("BandOutUsage")[-1].get("Value")
-	Metric_BandOutMaxUsage_A = Metric_A.get("BandOutMaxUsage")[-1].get("Value")
-	Metric_B = get_metric(Region_B).get("DataSets")
-	Metric_BandOut_B = Metric_B.get("BandOut")[-1].get("Value")
-	Metric_BandOutMax_B = Metric_B.get("BandOutMax")[-1].get("Value")
-	Metric_BandOutUsage_B = Metric_B.get("BandOutUsage")[-1].get("Value")
-	Metric_BandOutMaxUsage_B = Metric_B.get("BandOutMaxUsage")[-1].get("Value")
-	if Metric_BandOutMaxUsage_A > Metric_BandOutMaxUsage_B:
-		Metric_BandOutMaxUsage = Metric_BandOutMaxUsage_A
-		Larger_Region = Region_A
-		Metric_BandOutMaxUsage_Smaller = Metric_BandOutMaxUsage_B
-		Smaller_Region = Region_A
+	Metric_UDPN_A = get_metric_udpn(Region_A).get("DataSets")
+	Metric_BandOut_UDPN_A = Metric_UDPN_A.get("BandOut")[-1].get("Value")
+	Metric_BandOutMax_UDPN_A = Metric_UDPN_A.get("BandOutMax")[-1].get("Value")
+	Metric_BandOutUsage_UDPN_A = Metric_UDPN_A.get("BandOutUsage")[-1].get("Value")
+	Metric_BandOutMaxUsage_UDPN_A = Metric_UDPN_A.get("BandOutMaxUsage")[-1].get("Value")
+	Metric_B = get_metric_udpn(Region_B).get("DataSets")
+	Metric_BandOut_UDPN_B = Metric_B.get("BandOut")[-1].get("Value")
+	Metric_BandOutMax_UDPN_B = Metric_B.get("BandOutMax")[-1].get("Value")
+	Metric_BandOutUsage_UDPN_B = Metric_B.get("BandOutUsage")[-1].get("Value")
+	Metric_BandOutMaxUsage_UDPN_B = Metric_B.get("BandOutMaxUsage")[-1].get("Value")
+	if Metric_BandOutMaxUsage_UDPN_A > Metric_BandOutMaxUsage_UDPN_B:
+		Metric_BandOutMaxUsage_UDPN = Metric_BandOutMaxUsage_UDPN_A
+		Larger_Region_UDPN = Region_A
+		Metric_BandOutMaxUsage_UDPN_Smaller = Metric_BandOutMaxUsage_UDPN_B
+		Smaller_Region_UDPN = Region_A
 	else:
-		Metric_BandOutMaxUsage = Metric_BandOutMaxUsage_B
-		Larger_Region = Region_B
-		Smaller_Region = Region_A
-		Metric_BandOutMaxUsage_Smaller = Metric_BandOutMaxUsage_A
+		Metric_BandOutMaxUsage_UDPN = Metric_BandOutMaxUsage_UDPN_B
+		Larger_Region_UDPN = Region_B
+		Smaller_Region_UDPN = Region_A
+		Metric_BandOutMaxUsage_UDPN_Smaller = Metric_BandOutMaxUsage_UDPN_A
 		
 	#判断
-	if Metric_BandOutMaxUsage < 60:
-		New_Bandwidth = int(Current_Bandwidth * Pace[0])#0.8
-		if New_Bandwidth < Min_Limit_UDPN:
-			New_Bandwidth = Min_Limit_UDPN
-	elif Metric_BandOutMaxUsage >= 60 and Metric_BandOutMaxUsage < 70:
-		New_Bandwidth = int(Current_Bandwidth * Pace[2])#0.9
-		if New_Bandwidth < Min_Limit_UDPN:
-			New_Bandwidth = Min_Limit_UDPN
-	elif Metric_BandOutMaxUsage >= 70 and Metric_BandOutMaxUsage < 80:
-		New_Bandwidth = int(Current_Bandwidth * Pace[3])#0.95
-		if New_Bandwidth < Min_Limit_UDPN:
-			New_Bandwidth = Min_Limit_UDPN
-	elif Metric_BandOutMaxUsage >= 80 and Metric_BandOutMaxUsage < 90:
-		New_Bandwidth = int(Current_Bandwidth * Pace[5])#1.05
-		if New_Bandwidth > Max_Limit_UDPN:
-			New_Bandwidth = Max_Limit_UDPN
-	elif Metric_BandOutMaxUsage >= 90 and Metric_BandOutMaxUsage < 100:
-		New_Bandwidth = int(Current_Bandwidth * Pace[6])#1.1
-		if New_Bandwidth > Max_Limit_UDPN:
-			New_Bandwidth = Max_Limit_UDPN
-	elif Metric_BandOutMaxUsage >= 100 and Metric_BandOutMaxUsage < 110:
-		New_Bandwidth = int(Current_Bandwidth * Pace[7])#1.15
-		if New_Bandwidth > Max_Limit_UDPN:
-			New_Bandwidth = Max_Limit_UDPN
+	if Metric_BandOutMaxUsage_UDPN < 60:
+		New_Bandwidth_UDPN = int(Current_Bandwidth_UDPN * Pace[0])#0.8
+		if New_Bandwidth_UDPN < Min_Limit_UDPN:
+			New_Bandwidth_UDPN = Min_Limit_UDPN
+	elif Metric_BandOutMaxUsage_UDPN >= 60 and Metric_BandOutMaxUsage_UDPN < 70:
+		New_Bandwidth_UDPN = int(Current_Bandwidth_UDPN * Pace[2])#0.9
+		if New_Bandwidth_UDPN < Min_Limit_UDPN:
+			New_Bandwidth_UDPN = Min_Limit_UDPN
+	elif Metric_BandOutMaxUsage_UDPN >= 70 and Metric_BandOutMaxUsage_UDPN < 80:
+		New_Bandwidth_UDPN = int(Current_Bandwidth_UDPN * Pace[3])#0.95
+		if New_Bandwidth_UDPN < Min_Limit_UDPN:
+			New_Bandwidth_UDPN = Min_Limit_UDPN
+	elif Metric_BandOutMaxUsage_UDPN >= 80 and Metric_BandOutMaxUsage_UDPN < 90:
+		New_Bandwidth_UDPN = int(Current_Bandwidth_UDPN * Pace[5])#1.05
+		if New_Bandwidth_UDPN > Max_Limit_UDPN:
+			New_Bandwidth_UDPN = Max_Limit_UDPN
+	elif Metric_BandOutMaxUsage_UDPN >= 90 and Metric_BandOutMaxUsage_UDPN < 100:
+		New_Bandwidth_UDPN = int(Current_Bandwidth_UDPN * Pace[6])#1.1
+		if New_Bandwidth_UDPN > Max_Limit_UDPN:
+			New_Bandwidth_UDPN = Max_Limit_UDPN
+	elif Metric_BandOutMaxUsage_UDPN >= 100 and Metric_BandOutMaxUsage_UDPN < 110:
+		New_Bandwidth_UDPN = int(Current_Bandwidth_UDPN * Pace[7])#1.15
+		if New_Bandwidth_UDPN > Max_Limit_UDPN:
+			New_Bandwidth_UDPN = Max_Limit_UDPN
 	else:#即：>=110
-		New_Bandwidth = int(Current_Bandwidth * Metric_BandOutMaxUsage * Pace[8] / 100)#1.2
-		if New_Bandwidth > Max_Limit_UDPN:
-			New_Bandwidth = Max_Limit_UDPN
+		New_Bandwidth_UDPN = int(Current_Bandwidth_UDPN * Metric_BandOutMaxUsage_UDPN * Pace[8] / 100)#1.2
+		if New_Bandwidth_UDPN > Max_Limit_UDPN:
+			New_Bandwidth_UDPN = Max_Limit_UDPN
 				
 	#调整带宽
-	Modify_Record = modify_udpn_bandwidth(New_Bandwidth)
+	Modify_Record_UDPN = modify_udpn_bandwidth(New_Bandwidth_UDPN)
 	
 	#记录日志
 	#例如：20231207 16:26 资源ID 区域a（高）带宽使用率 当前带宽值 调整带宽值 调整幅度 unxi时间戳 区域a 区域b
-	Log_DescribeUDPN = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + " "+UDPN_ID+" "+"当前带宽值："+str(Current_Bandwidth)
-	Log_GetMetric = "，峰值使用率："+str(Metric_BandOutMaxUsage)+"%"
-	Log_Judge = "，调整比例："+str(round(New_Bandwidth/Current_Bandwidth,2))
-	Log_ModifyUDPN = "，新带宽值："+str(New_Bandwidth)
-	Log_Summary = "，出口更大区域："+Larger_Region
+	Log_DescribeUDPN = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + " "+UDPN_ID+" "+"当前带宽值："+str(Current_Bandwidth_UDPN)
+	Log_GetMetric = "，峰值使用率："+str(Metric_BandOutMaxUsage_UDPN)+"%"
+	Log_Judge = "，调整比例："+str(round(New_Bandwidth_UDPN/Current_Bandwidth_UDPN,2))
+	Log_ModifyUDPN = "，新带宽值："+str(New_Bandwidth_UDPN)
+	Log_Summary = "，出口更大区域："+Larger_Region_UDPN
 	log(Log_DescribeUDPN,Log_GetMetric,Log_Judge,Log_ModifyUDPN,Log_Summary)
 	print(Log_DescribeUDPN,Log_GetMetric,Log_Judge,Log_ModifyUDPN,Log_Summary)
+	
+	#def modify_sharebandwidth():
+	#print("")
+	
+
+def modify_sharebandwidth():
+	#获取带宽值
+	Current_Bandwidth_Share_Region_A = describe_share_bandwidth(Region_A).get("DataSet")[0].get("ShareBandwidth")
+	Current_Bandwidth_Share_Region_B = describe_share_bandwidth(Region_B).get("DataSet")[0].get("ShareBandwidth")
+	
+	#获取监控值
+	Metric_Share_A = getmetric_share(Region_A, Region_A_ShareBandwidthId).get("DataSets")
+	Metric_Share_A_BandIn = Metric_Share_A.get("BandIn")[-1].get("Value")
+	Metric_Share_A_BandOut = Metric_Share_A.get("BandOut")[-1].get("Value")
+	Metric_Share_A_NetworkInUsage = Metric_Share_A.get("NetworkInUsage")[-1].get("Value")
+	Metric_Share_A_NetworkOutUsage = Metric_Share_A.get("NetworkOutUsage")[-1].get("Value")
+	
+	Metric_Share_B = getmetric_share(Region_B, Region_B_ShareBandwidthId).get("DataSets")
+	Metric_Share_B_BandIn = Metric_Share_B.get("BandIn")[-1].get("Value")
+	Metric_Share_B_BandOut = Metric_Share_B.get("BandOut")[-1].get("Value")
+	Metric_Share_B_NetworkInUsage = Metric_Share_B.get("NetworkInUsage")[-1].get("Value")
+	Metric_Share_B_NetworkOutUsage = Metric_Share_B.get("NetworkOutUsage")[-1].get("Value")
+	
+	if Metric_Share_A_NetworkInUsage > Metric_Share_A_NetworkOutUsage:
+		Metric_Share_A = Metric_Share_A_NetworkInUsage
+		Larger_share_A = "入向"
+	else:
+		Metric_Share_A = Metric_Share_A_NetworkOutUsage
+		Larger_share_A = "出向"
+		
+	if Metric_Share_B_NetworkInUsage > Metric_Share_B_NetworkOutUsage:
+		Metric_Share_B = Metric_Share_B_NetworkInUsage
+		Larger_share_B = "入向"
+	else:
+		Metric_Share_B = Metric_Share_B_NetworkOutUsage
+		Larger_share_B = "出向"
+	
+	
+	#判断
+	
+	
+	
+	
+		
+		
+	#调整带宽
+	Modify_Record_Share_Region_A = resize_share_bandwidth(Region_A,New_Bandwidth_Share,Region_A_ShareBandwidthId)
+
+	
+	
 	
 #定时任务
 def main():
 	while True:
-		modify()
+		modify_udpn()
+		modify_sharebandwidth()
 		time.sleep(60)
 if __name__ == '__main__':
 	main()
