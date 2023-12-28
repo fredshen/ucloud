@@ -9,16 +9,14 @@ from ucloud.client import Client
 import time
 
 #修改为个人秘钥
-#账号：1349826830@qq.com
-Pubulic_Key = "2DVUfAN0VeWFBIV3OBjn9W9tWB5VqB7iOIN9OVuX7"
-Private_Key = "FNoqMqrZqMY5mGpOFeudMzF8EfCtcvq838jVLBmOXavkFzkXlX3NjCE5Mf5OUmrwdf"
+#账号：ibu-bot@ucloud.cn
+Pubulic_Key = "4eZBe1JSbOaDrvqa0VoM1V5E3VYkiOTua"
+Private_Key = "8BS9OGIisT58x76QWlK3zk8dZEmk702NM7BBuM5dZdGU"
+Project_ID = "org-z50fdd"
 
 #
-UDPN_ID = "udpn-rv281e2zx6z"
-Project_ID = "org-en5c1p"
-Region = "cn-gd"
-Zone = "cn-gd-02"
-#Log_Path = "/Users/fredshen/Downloads/uwork/API_test"
+UDPN_ID = "udpn-rydzz4x1vgx"
+Region = "cn-sh2"
 
 #请勿随意修改以下信息
 client = Client({
@@ -36,7 +34,7 @@ def main():
 		"ProjectId": Project_ID,
 		"ResourceType": "udpn",
 		"ResourceId": UDPN_ID,
-		"TimeRange": 3000,
+		"TimeRange": 1000,
 		"MetricName.0": "BandOutMaxUsage"
 	})
 	

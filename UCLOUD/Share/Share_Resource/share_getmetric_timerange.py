@@ -9,16 +9,13 @@ from ucloud.client import Client
 import time
 
 #修改为个人秘钥
-#账号：1349826830@qq.com
-Pubulic_Key = "2DVUfAN0VeWFBIV3OBjn9W9tWB5VqB7iOIN9OVuX7"
-Private_Key = "FNoqMqrZqMY5mGpOFeudMzF8EfCtcvq838jVLBmOXavkFzkXlX3NjCE5Mf5OUmrwdf"
+#账号：ibu-bot@ucloud.cn
+Pubulic_Key = "4eZBe1JSbOaDrvqa0VoM1V5E3VYkiOTua"
+Private_Key = "8BS9OGIisT58x76QWlK3zk8dZEmk702NM7BBuM5dZdGU"
+Project_ID = "org-z50fdd"
 
-Package_ID = "default-bw-rpkcjaass49"
-UGN_ID = "ugn-qr34zqz4xuh"
-Project_ID = "org-en5c1p"
+ShareBandwidth_ID = "bwshare-rz4nwp4841k"
 Region = "cn-gd"
-Zone = "cn-gd-02"
-#Log_Path = "/Users/fredshen/Downloads/uwork/API_test"
 
 #请勿随意修改以下信息
 client = Client({
@@ -32,18 +29,17 @@ client = Client({
 def main():
 	resp = client.invoke("GetMetric", {
 		"Region": Region,
-		"Zone": Zone,
 		"ProjectId": Project_ID,
-		"ResourceType": "ugnbw",
-		"ResourceId": Package_ID,
+		"ResourceType": "sharebandwidth",
+		"ResourceId": ShareBandwidth_ID,
 		"TimeRange": 3000,
-		"MetricName.0": "UgnBWOutPeakUsage"
+		"MetricName.0": "NetworkOutUsage"
 	})
 	
 	print("------------复制以下信息------------")
 	
 	
-	Usage_Data = resp["DataSets"].get("UgnBWOutPeakUsage")
+	Usage_Data = resp["DataSets"].get("NetworkOutUsage")
 	
 	Time_Range = []
 	Frequency = []
