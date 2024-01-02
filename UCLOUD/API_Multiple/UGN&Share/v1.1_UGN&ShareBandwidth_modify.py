@@ -18,7 +18,6 @@ Release Date: 28/12/2023
 2.本脚本用于弹性调整UGN和共享带宽，日志会分别存储为：udpn_modify.log、sharebandwidth_modify.log。
 3.本脚本仅用于参考使用，不承担生产使用异常带来的风险。
 
-
 Release Note:
 Version: 1.2
 1.修改GetMetric获取的监控类型，只获取峰值带宽使用率
@@ -100,27 +99,6 @@ def get_metric(Region,ResourceType,ShareBandwidthId,MetricName0,MetricName1):
 	except exc.RetCodeException as e:
 		resp3 = e.json()
 	return(resp3)
-
-'''
-	try:
-		resp2 = client.invoke("GetMetric", {
-			"Region": Region,
-			"Zone": Zone,
-			"ProjectId": Project_ID,
-			"ResourceType": "ugnbw",
-			"ResourceId": Package_ID,
-			"TimeRange": 200,
-			"MetricName.0": "UgnBWOutPeakUsage"
-	})
-	except exc.RetCodeException as e:
-		resp2 = e.json()
-	Current_UgnBWOut_PeakUsage = resp2.get("DataSets").get("UgnBWOutPeakUsage")[-1].get("Value")
-	#print(Current_UgnBWOut_PeakUsage)
-	Log_GetMetric = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())  +" "+UGN_ID +" "+Package_ID +" " + str(resp2.get("DataSets").get("UgnBWOutPeakUsage")[-1].get("Value"))+" " + str(resp2.get("Action")) + " "+str(resp2.get("RetCode"))+" " + str(resp1.get("BwPackages")[-1].get("RegionA"))+" " + str(resp1.get("BwPackages")[-1].get("RegionB"))
-	#print(Log_GetMetric)
-'''	
-
-
 
 #3 判断
 def judge(Judge_Metric_Data,Current_Bandwidth,Resource_Type):
@@ -270,8 +248,7 @@ def modify():
 	UGN_New_Bandwidth = judge(UGN_Metric_Data,UGN_Current_Bandwidth,"UGN")
 	ShareBandWidth_New_Bandwidth_Region_A = judge(ShareBandwidth_Metric_Data_A,ShareBandWidth_Current_Bandwidth_Region_A,"ShareBandwidth")
 	ShareBandWidth_New_Bandwidth_Region_B = judge(ShareBandwidth_Metric_Data_B,ShareBandWidth_Current_Bandwidth_Region_B,"ShareBandwidth")
-	
-	
+		
 	#调整带宽
 	UGN_Modify_Record = ModifyUGNBandwidth(UGN_New_Bandwidth)
 	ShareBandWidth_Modify_Record_A = resize_share_bandwidth(Region_A, ShareBandWidth_New_Bandwidth_Region_A, Region_A_ShareBandwidthId)
@@ -304,9 +281,7 @@ def modify():
 	ShareBandWidth_Log_Summary_B = "，出口更大区域："+ShareBandwidth_Larger_B
 	log(ShareBandwidth_Log_Path,ShareBandWidth_Log_Describe_B,ShareBandWidth_Log_GetMetric_B,ShareBandWidth_Log_Judge_B,ShareBandWidth_Log_Modify_B,ShareBandWidth_Log_Summary_B)
 	print(ShareBandWidth_Log_Describe_B,ShareBandWidth_Log_GetMetric_B,ShareBandWidth_Log_Judge_B,ShareBandWidth_Log_Modify_B,ShareBandWidth_Log_Summary_B)
-	
-	
-	
+
 #定时任务
 def main():
 	while True:
