@@ -286,6 +286,6 @@ def modify():
 def main():
 	while True:
 		modify()
-		time.sleep(10)
+		time.sleep(60)
 if __name__ == '__main__':
 	main()
