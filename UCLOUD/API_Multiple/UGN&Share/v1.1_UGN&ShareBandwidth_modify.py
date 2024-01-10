@@ -10,8 +10,8 @@ import time
 
 '''
 Author: F.Shen（fred.shen@ucloud.cn）
-Version: 1.2
-Release Date: 28/12/2023
+Version: 1.3
+Release Date: 10/01/2024
 
 使用须知：
 1.请修改秘钥信息、通用信息、UGN Info、ShareBnadwidth Info后再使用。
@@ -21,6 +21,9 @@ Release Date: 28/12/2023
 Release Note:
 Version: 1.2
 1.修改GetMetric获取的监控类型，只获取峰值带宽使用率
+Version: 1.3
+1.修改调整UGN的灵敏度
+2.修改新共享带宽取值方法：从共享带宽监控→改为UGN的0.8倍
 '''
 
 #修改为个人秘钥
@@ -36,15 +39,15 @@ ShareBandwidth_Log_Path = "/Users/fredshen/Downloads/uwork/API_test/sharebandwid
 
 #ShareBnadwidth Info
 Region_A = "cn-sh2"
-Region_A_ShareBandwidthId = "bwshare-rz4o9mfbqz2"#与Region_A对应
+Region_A_ShareBandwidthId = "bwshare-sho9e9umuhl"#与Region_A对应
 Region_B = "cn-gd"
-Region_B_ShareBandwidthId = "bwshare-rz4nwp4841k"#与Region_B对应
+Region_B_ShareBandwidthId = "bwshare-sho9uwcbogf"#与Region_B对应
 Max_Limit_ShareBandwidth = 8000#带宽可调节上限值
 Min_Limit_ShareBandwidth = 20#带宽可调节下限值（最小值20）
 
 #UGN Info
 UGN_ID = "ugn-rzh0xj9ojtl"
-UGN_Bandwidth_ID = "bw-rzh1w0d7u29"
+UGN_Bandwidth_ID = "bw-sho8ncy1dhr"
 
 Max_Limit_UGN = 8000#带宽可调节上限值
 Min_Limit_UGN = 2#带宽可调节下限值（最小值2）
@@ -122,26 +125,32 @@ def judge(Judge_Metric_Data,Current_Bandwidth,Resource_Type):
 			New_Bandwidth = Current_Bandwidth +1
 		if New_Bandwidth < Min_Limit:
 			New_Bandwidth = Min_Limit
-	elif Judge_Metric_Data >= 70 and Judge_Metric_Data < 80:
-		New_Bandwidth = int(Current_Bandwidth * Pace[3])#0.95
+	elif Judge_Metric_Data >= 70 and Judge_Metric_Data < 75:
+		New_Bandwidth = int(Current_Bandwidth * Pace[5])#1.05
+		if New_Bandwidth == Current_Bandwidth:
+			New_Bandwidth = Current_Bandwidth +1
+		if New_Bandwidth < Min_Limit:
+			New_Bandwidth = Min_Limit
+	elif Judge_Metric_Data >= 75 and Judge_Metric_Data < 80:
+		New_Bandwidth = int(Current_Bandwidth * Pace[6])#1.1
 		if New_Bandwidth == Current_Bandwidth:
 			New_Bandwidth = Current_Bandwidth +1
 		if New_Bandwidth < Min_Limit:
 			New_Bandwidth = Min_Limit
 	elif Judge_Metric_Data >= 80 and Judge_Metric_Data < 90:
-		New_Bandwidth = int(Current_Bandwidth * Pace[5])#1.05
+		New_Bandwidth = int(Current_Bandwidth * Pace[7])#1.15
 		if New_Bandwidth == Current_Bandwidth:
 			New_Bandwidth = Current_Bandwidth +1
 		if New_Bandwidth > Max_Limit:
 			New_Bandwidth = Max_Limit
 	elif Judge_Metric_Data >= 90 and Judge_Metric_Data < 100:
-		New_Bandwidth = int(Current_Bandwidth * Pace[6])#1.1
+		New_Bandwidth = int(Current_Bandwidth * Pace[8])#1.2
 		if New_Bandwidth == Current_Bandwidth:
 			New_Bandwidth = Current_Bandwidth +1
 		if New_Bandwidth > Max_Limit:
 			New_Bandwidth = Max_Limit
 	elif Judge_Metric_Data >= 100 and Judge_Metric_Data < 110:
-		New_Bandwidth = int(Current_Bandwidth * Pace[7])#1.15
+		New_Bandwidth = int(Current_Bandwidth * Pace[9])#1.25
 		if New_Bandwidth == Current_Bandwidth:
 			New_Bandwidth = Current_Bandwidth +1
 		if New_Bandwidth > Max_Limit:
@@ -158,7 +167,6 @@ def judge(Judge_Metric_Data,Current_Bandwidth,Resource_Type):
 def ModifyUGNBandwidth(New_Bandwidth_UGN):
 	try:
 		resp4 = client.invoke("ModifyUGNBandwidth", {
-			#"ProjectId": "org-z50fdd",
 			"PackageID": UGN_Bandwidth_ID,
 			"UGNID": UGN_ID,
 			"BandWidth": New_Bandwidth_UGN
@@ -246,8 +254,16 @@ def modify():
 		ShareBandwidth_Larger_B = "出向"
 		
 	UGN_New_Bandwidth = judge(UGN_Metric_Data,UGN_Current_Bandwidth,"UGN")
-	ShareBandWidth_New_Bandwidth_Region_A = judge(ShareBandwidth_Metric_Data_A,ShareBandWidth_Current_Bandwidth_Region_A,"ShareBandwidth")
-	ShareBandWidth_New_Bandwidth_Region_B = judge(ShareBandwidth_Metric_Data_B,ShareBandWidth_Current_Bandwidth_Region_B,"ShareBandwidth")
+
+	ShareBandWidth_New_Bandwidth_Region_A = UGN_New_Bandwidth * 0.8
+	if ShareBandWidth_New_Bandwidth_Region_A < Min_Limit_ShareBandwidth:
+		ShareBandWidth_New_Bandwidth_Region_A = Min_Limit_ShareBandwidth
+	ShareBandWidth_New_Bandwidth_Region_B = UGN_New_Bandwidth * 0.8
+	if ShareBandWidth_New_Bandwidth_Region_B < Min_Limit_ShareBandwidth:
+		ShareBandWidth_New_Bandwidth_Region_B = Min_Limit_ShareBandwidth
+	#修改共享带宽值获取方法
+	#ShareBandWidth_New_Bandwidth_Region_A = judge(ShareBandwidth_Metric_Data_A,ShareBandWidth_Current_Bandwidth_Region_A,"ShareBandwidth")
+	#ShareBandWidth_New_Bandwidth_Region_B = judge(ShareBandwidth_Metric_Data_B,ShareBandWidth_Current_Bandwidth_Region_B,"ShareBandwidth")
 		
 	#调整带宽
 	UGN_Modify_Record = ModifyUGNBandwidth(UGN_New_Bandwidth)
