@@ -7,7 +7,7 @@ Zone = "cn-bj2-03"#华北一C
 Zone = "cn-bj2-04"#华北一D
 Zone = "cn-bj2-05"#华北一D
 
-#华北一：
+#华北二：
 Region = "cn-wlcb"
 Zone = "cn-wlcb-01"#华北二A
 
