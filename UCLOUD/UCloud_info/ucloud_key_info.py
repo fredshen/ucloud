@@ -7,7 +7,10 @@ Private_Key = "FNoqMqrZqMY5mGpOFeudMzF8EfCtcvq838jVLBmOXavkFzkXlX3NjCE5Mf5OUmrwd
 Project_ID = "org-en5c1p"
 
 #修改为个人秘钥
+#账号：eiu_test@ucloud.cn
+#公司ID：66091692
 #账号：shenchaook@gmail.com
+#项目ID：64196047
 Pubulic_Key = "4eZBKoQnYDiAjVI6SPmPiRH47Sj4Fhxlu"
 Private_Key = "9AXyD8mINFgHlrblFp1tAPIcUBwfojXiBKgoPyEzgi6W"
 Project_ID = "org-fye3q5"#华东

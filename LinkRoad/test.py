@@ -37,4 +37,8 @@ def main():
 if __name__ == '__main__':
     main()
 
+<<<<<<< HEAD
 print("yes")
+=======
+print("hello world")
+>>>>>>> 13c8fa4d2a6659044450d8fabaea0700517d7780
